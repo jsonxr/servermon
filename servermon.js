@@ -32,40 +32,46 @@ function startMaster(options) {
   var log = options.log || function () {};
   var error = options.error || function (msg) { console.error(msg); };
   var delay = options.delay || 3000; // 3 second delay before restarting server
-
+  var onMaster = options.onMaster || nullop;
+  
   log('started master');
 
-  process.on('SIGHUP', function () {
-    log('Received SIGHUP. Reloading...');
-    for(var id in cluster.workers) {
-      restartWorker(options, cluster.workers[id], timeout);
-    }
-  });
-  // fork the processes
-  if (children > 0) {
-    for (var i = 0; i < children; i++) {
-      forkWorker(options.log);
-    }
+  onMaster(function (err) {
+    if (err) { return error(err); }
+    
+    process.on('SIGHUP', function () {
+      log('Received SIGHUP. Reloading...');
+      for(var id in cluster.workers) {
+        restartWorker(options, cluster.workers[id], timeout);
+      }
+    });
+    // fork the processes
+    if (children > 0) {
+      for (var i = 0; i < children; i++) {
+        forkWorker(options.log);
+      }
 
-    if (restart) {
-      cluster.on('exit', function (worker, code, signal) {
-        // Replace the dead worker
-        // Restart if it was not a graceful exit
-        var keys = Object.keys(cluster.workers);
-        if (code > 0 && keys.length < children) {
-          error('\nchild '+worker.id+' died with error code ' + code + '. Restarting in '+delay+'ms...');
-          error('\n     :^(\n\n');
-          setTimeout(function () {
-            forkWorker(options.log);
-          }, delay);
-        } else {
-          log('child ' + worker.id + ' exited with error code 0')
-        }
-      });
-    }
-  } else {
-    startChild(options);
-  }
+      if (restart) {
+        cluster.on('exit', function (worker, code, signal) {
+          // Replace the dead worker
+          // Restart if it was not a graceful exit
+          var keys = Object.keys(cluster.workers);
+          if (code > 0 && keys.length < children) {
+            error('\nchild '+worker.id+' died with error code ' + code + '. Restarting in '+delay+'ms...');
+            error('\n     :^(\n\n');
+            setTimeout(function () {
+              forkWorker(options.log);
+            }, delay);
+          } else {
+            log('child ' + worker.id + ' exited with error code 0')
+          }
+        });
+      }
+    } else {
+      startChild(options);
+    }  
+  });
+  
 }
 
 function nullop(callback) {

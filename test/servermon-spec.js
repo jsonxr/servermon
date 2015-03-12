@@ -11,10 +11,6 @@ describe('environment', function () {
     done();
   });
 
-  it('should call options.onStart', function (done) {
-    done();
-  });
-  
   it('should start fork processes equal to options.children', function (done) {
     done();
   });
@@ -22,7 +18,15 @@ describe('environment', function () {
   it('should not fork if options.children = 0', function (done) {
     done();
   });
-  
+
+  it('should call options.onMaster', function (done) {
+    done();
+  });
+
+  it('should call options.onStart', function (done) {
+    done();
+  });
+    
   it('should call options.onShutdown', function (done) {
     done();
   });

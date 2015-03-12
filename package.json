@@ -1,6 +1,6 @@
 {
   "name": "servermon",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Server that responds to proess signals",
   "main": "servermon.js",
   "scripts": {

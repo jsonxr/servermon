@@ -5,6 +5,10 @@ servermon({
   log: function (msg) { console.log(msg); },
   error: function (msg) { console.error(msg); },
   delay: 1000,
+  onMaster: function (callback) {
+    console.log('onMaster called');
+    callback();
+  },
   onStart: function () {
     var http = require('http');
     this.server = http.createServer(function (req, res) {
