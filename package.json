@@ -1,0 +1,32 @@
+{
+  "name": "servermon",
+  "version": "1.0.0",
+  "description": "Server that responds to proess signals",
+  "main": "servermon.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "directories": {
+    "test": "test"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jsonxr/servermon.git"
+  },
+  "keywords": [
+    "server",
+    "process",
+    "signal",
+    "monitor",
+    "docker"
+  ],
+  "author": "Jason Rowland <jason@snowcapstudios.com> (http://www.jasonrowland.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jsonxr/servermon/issues"
+  },
+  "homepage": "https://github.com/jsonxr/servermon"
+}
